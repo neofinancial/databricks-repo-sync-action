@@ -1,0 +1,24 @@
+name: 'Databricks Repo Sync'
+description: 'Sync a Databricks repo based on a Github branch/tag'
+inputs:
+  account:
+    description: 'Databricks account. E.g.: "my-account" in the my-account.cloud.databricks.com domain'
+    required: true
+  access-token:
+    description: 'Databricks access token to be used as Authentication'
+    required: true
+  repo-id:
+    description: 'Databricks repo internal ID. E.g: 123456789012345'
+    required: false
+  repo-path:
+    description: 'Databricks repo path. E.g: /Repos/production/my-repo'
+    required: false
+  branch:
+    description: 'Branch to sync the Databricks repo'
+    required: false
+  tag:
+    description: 'Tag to sync with'
+    required: false
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

@@ -1,0 +1,34 @@
+{
+  "name": "databricks-repo-sync-action",
+  "version": "1.0.0",
+  "description": "Repo created to store the action in charge to sync Github Repos with Databricks",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "nyc mocha './src/**/*.test.js'",
+    "dist": "ncc build src/index.js -o dist --license licenses.txt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neofinancial/databricks-repo-sync-action.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/neofinancial/databricks-repo-sync-action/issues"
+  },
+  "homepage": "https://github.com/neofinancial/databricks-repo-sync-action#readme",
+  "dependencies": {
+    "@actions/core": "^1.4.0",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.29.1",
+    "chai": "^4.3.4",
+    "chai-as-promised": "^7.1.1",
+    "chai-nock": "^1.3.0",
+    "mocha": "^9.0.3",
+    "nock": "^13.1.1",
+    "nyc": "^15.1.0"
+  }
+}
