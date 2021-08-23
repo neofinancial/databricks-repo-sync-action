@@ -13,11 +13,8 @@ inputs:
   repo-path:
     description: 'Databricks repo path. E.g: /Repos/production/my-repo'
     required: false
-  branch:
-    description: 'Branch to sync the Databricks repo'
-    required: false
-  tag:
-    description: 'Tag to sync with'
+  branch-tag:
+    description: 'Branch/Tag to sync the Databricks repo with'
     required: false
 runs:
   using: 'node12'
