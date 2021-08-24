@@ -2161,9 +2161,9 @@ class ReposAPI {
 
         try {
             const payload = await this.#handleResponse(response);
-            return this.#parseRepoIdFromResponse(payload['repos'], repoPath);
+            return this.#parseRepoIdFromResponse(payload.repos || [], repoPath);
         } catch (err) {
-            throw `Failed to get repo id: ${err}`;
+            throw new Error(`Failed to get repo id: ${err}`);
         }
     }
 
@@ -2191,25 +2191,25 @@ class ReposAPI {
             const payload = await this.#handleResponse(response);
             return payload["head_commit_id"].substring(0, 7);
         } catch (err) {
-            throw `Failed to sync databricks repo: ${err}`;
+            throw new Error(`Failed to sync databricks repo: ${err}`);
         }
     }
 
-// TODO - use response.data message to enrich error 
     async #handleResponse(response) {
+        var data = await response.json();
         if (!response.ok) {
-            throw `${response.status} ${response.statusText}`;
+            throw `${response.status} ${data.message}`;
         }
-        return response.json();
+        return data;
     }
 
     #parseRepoIdFromResponse(repos, repoPath) {
         for (var x = 0; x < repos.length; x++) {
             if (repos[x]["path"] === repoPath) {
-                return repos[x]["id"]
+                return repos[x]["id"];
             }
         }
-        throw new Error(`Repo path ${repoPath} not found`)
+        throw `Repo path ${repoPath} not found`
     }
 
     #buildSyncBody(branch, tag) {
@@ -2402,9 +2402,6 @@ async function run() {
 
         repos = new ReposAPI(account, accessToken);
 
-        core.info("::warning file=app.js,line=1,col=5::Missing semicolon")
-        throw "toma"
-
         if (repoId == '') {
             if (repoPath == '') {
                 core.setFailed("Must supply a repo-id or repo-path!");
@@ -2422,7 +2419,7 @@ async function run() {
 
         core.info(`Repo is now synced at commit ${commit}`);
     } catch (error) {
-        core.setFailed(error);
+        core.setFailed(error.message);
     }
 }
 
