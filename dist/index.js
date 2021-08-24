@@ -2139,11 +2139,11 @@ exports.FetchError = FetchError;
 
 const fetch = __nccwpck_require__(467);
 class ReposAPI {
-    #accessToken;
-    #baseUrl;
+    accessToken;
+    baseUrl;
     constructor(instancePrefix, accessToken) {
-        this.#baseUrl = `https://${instancePrefix}.cloud.databricks.com/api/2.0/repos`;
-        this.#accessToken = accessToken;
+        this.baseUrl = `https://${instancePrefix}.cloud.databricks.com/api/2.0/repos`;
+        this.accessToken = accessToken;
     }
 
     /**
@@ -2152,16 +2152,16 @@ class ReposAPI {
      * @return {[String]}              [Databricks repo ID]
      */
     async getDatabricksRepoId(repoPath) {
-        const getReposRequest = new fetch.Request(this.#baseUrl.concat(`?path_prefix=${repoPath}`), {
+        const getReposRequest = new fetch.Request(this.baseUrl.concat(`?path_prefix=${repoPath}`), {
             method: "GET",
-            headers: this.#buildHeaders(),
+            headers: this.buildHeaders(),
         });
 
         const response = await fetch(getReposRequest);
 
         try {
-            const payload = await this.#handleResponse(response);
-            return this.#parseRepoIdFromResponse(payload.repos || [], repoPath);
+            const payload = await this.handleResponse(response);
+            return this.parseRepoIdFromResponse(payload.repos || [], repoPath);
         } catch (err) {
             throw new Error(`Failed to get repo id: ${err}`);
         }
@@ -2179,23 +2179,23 @@ class ReposAPI {
             throw new Error(`Must supply a branch or tag! Got branch ${branch}, tag ${tag}`);
         };
 
-        const syncRequest = new fetch.Request(this.#baseUrl.concat(`/${repoId}`), {
+        const syncRequest = new fetch.Request(this.baseUrl.concat(`/${repoId}`), {
             method: "PATCH",
-            body: this.#buildSyncBody(branch, tag),
-            headers: this.#buildHeaders(),
+            body: this.buildSyncBody(branch, tag),
+            headers: this.buildHeaders(),
         });
 
         const response = await fetch(syncRequest);
 
         try {
-            const payload = await this.#handleResponse(response);
+            const payload = await this.handleResponse(response);
             return payload["head_commit_id"].substring(0, 7);
         } catch (err) {
             throw new Error(`Failed to sync databricks repo: ${err}`);
         }
     }
 
-    async #handleResponse(response) {
+    async handleResponse(response) {
         var data = await response.json();
         if (!response.ok) {
             throw `${response.status} ${data.message}`;
@@ -2203,7 +2203,7 @@ class ReposAPI {
         return data;
     }
 
-    #parseRepoIdFromResponse(repos, repoPath) {
+    parseRepoIdFromResponse(repos, repoPath) {
         for (var x = 0; x < repos.length; x++) {
             if (repos[x]["path"] === repoPath) {
                 return repos[x]["id"];
@@ -2212,7 +2212,7 @@ class ReposAPI {
         throw `Repo path ${repoPath} not found`
     }
 
-    #buildSyncBody(branch, tag) {
+    buildSyncBody(branch, tag) {
         var data = { "branch": branch }
         if (tag != null) {
             data = { "tag": tag }
@@ -2220,10 +2220,10 @@ class ReposAPI {
         return JSON.stringify(data)
     }
 
-    #buildHeaders() {
+    buildHeaders() {
         const headers = new fetch.Headers();
 
-        headers.append("Authorization", `Bearer ${this.#accessToken}`)
+        headers.append("Authorization", `Bearer ${this.accessToken}`)
         headers.append("Accept", "application/json")
         headers.append("Content-Type", "application/json")
 
