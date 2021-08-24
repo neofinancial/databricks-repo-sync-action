@@ -2413,7 +2413,7 @@ async function run() {
             core.info("repo-id found. Using it to sync repo");
         }
 
-        const branchOrTag = branch ?? tag;
+        const branchOrTag = branch != null ? branch : tag;
         core.info(`Syncing Databricks repo with ${branchOrTag}`);
         const commit = await repos.syncDatabricksRepo(repoId, branch, tag);
 
