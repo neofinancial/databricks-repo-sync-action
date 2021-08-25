@@ -1,5 +1,8 @@
 # databricks-repo-sync-action
-Repo created to store the action in charge to sync Github Repos with Databricks
+
+[![Node.js CI](https://github.com/neofinancial/databricks-repo-sync-action/actions/workflows/main.yml/badge.svg)](https://github.com/neofinancial/databricks-repo-sync-action/actions/workflows/main.yml)
+
+Github action that sync Github with Databricks repos.
 
 ## Inputs
 
