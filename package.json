@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/neofinancial/databricks-repo-sync-action#readme",
   "dependencies": {
-    "@actions/core": "^1.4.0",
+    "@actions/core": "^1.9.1",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
